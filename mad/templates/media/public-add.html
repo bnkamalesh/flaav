@@ -1,0 +1,519 @@
+{%- extends "layout.html" %}
+{%- macro print_errors(errors) %}
+	{%- if errors %}
+		{%- for error in errors %}
+		<span class="error">{{ error }}</span>
+		{%- endfor %}
+	{%- endif %}
+{%- endmacro %}
+{% block body_class %}front media media-add{% endblock %}
+{% block content %}
+<style>
+	form {
+		font-size: 14px;
+		line-height: 16px;
+	}
+
+	input[type="button"], input[type="submit"], .button, a.button {
+		margin-right: 0;
+	}
+
+	#main, form {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	#slideshow .slide {
+		height: auto !important;
+		overflow-y: auto;
+		margin: 0;
+	}
+	#slideshow .slide ul.noul {
+		margin: 40px auto 0;
+		display: block;
+	}
+	#slideshow .slide ul.noul input.text,
+	#slideshow .slide ul.noul textarea,
+	#slideshow .slide ul.noul select {
+		width: 100%;
+		box-sizing: border-box;
+		display: block;
+	}
+	#slideshow .prev,
+	#slideshow .next {
+		background-color: #666;
+	}
+
+	#main article {
+		max-width: 720px;
+		margin: 3.4% auto 3.4%;
+	}
+
+	#title_nav {
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 1em;
+
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 54px;
+		z-index: 15;
+		overflow: hidden;
+	}
+
+	#title_nav li {
+		background: #674172;
+		color: #fff;
+		text-transform: uppercase;
+
+		margin: 0;
+		height: 100%;
+		padding: 4px 16px;
+		width: 25%;
+
+		display: inline-block;
+		vertical-align: middle;
+		box-sizing: border-box;
+	}
+
+	#title_nav li.active { background: #E5B818; }
+	#title_nav li:last-child {
+		/*width: 33.99%;*/
+		border-right: none;
+	}
+	.text-right { text-align: right; }
+
+	.loading {
+		background: url("{{ url_for('static', filename='images/loading.gif') }}") no-repeat center center;
+		background-size: 100% auto;
+
+		width: 16px;
+		height: 16px;
+		margin: 0 1em 0 0;
+		display: inline-block;
+		vertical-align: middle;
+	}
+</style>
+{%- if not data.show_add_form %}
+<article>
+	<h2 class="title">
+		Welcome to Flaav
+		<span class="sub-title">Thanks for being first</span>
+	</h2>
+	<p>We like to pronounce it Flave, but to each their own.</p>
+	<p>
+		<strong>Flaav creates media plans and marketing alternatives.</strong>
+		Media planning helps customers determine the best combination of media to achieve their marketing campaign objectives. 
+		This process is extremely effective but often over looked because it is difficult, time consuming, and expensive. 
+		Flaav bridges the gap by using a complex search algorithm to help automate the media planning process. Flaav is able 
+		to save our customer's time and money by creating effective Media Plans which connects them to new advertising partners.
+	</p>
+
+	<p>
+		Right now we are getting ready to launch and we want you to join us on that path.  Currently we are growing our list of 
+		places to advertise before we launch to the public.  This information will be used to pair the right customer with you.   
+		One of our main goals is to bring you customers which need and want your services.  Getting your marketing / contact information 
+		on Flaav is free and easy.  By working with us you can expect:
+	</p>
+	<ol>
+		<li>New customers you have not yet been introduced to.</li>
+		<li>Customers who you fill the needs of (thus more satisfied with you services).</li>
+		<li>Loyal customers who return based on the positive results.</li>
+	</ol>
+	<p>
+		We do not charge our customers to contact you, nor will we charge you to have access to our customers.  It is our mission to 
+		provide value to our clients by creating the best possible media plans.  That means giving the right resources (you) to the 
+		right people (new customers).
+	</p>
+
+	<p>
+		Please fill out the form on the next page so you can be with us from the start.  Shortly, we will be launching our full website 
+		and you will be one of the first invited.  Once members, you will have the ability to add more than one type of advertisement, 
+		have access to metrics regarding the results of your service, and have the opportunity to use a variety of tools to help make 
+		your everyday lives easier.
+	</p>
+	<p>
+		Feel free to contact us at, <a href="mailto:jordan@flaav.com">jordan@flaav.com</a> - Yes you will be on our list of the people 
+		who believed in us first... that will go a long way, we promise!
+	</p>
+	<div class="text-right">
+		<a href="?next=show-form" class="button">Create your listing</a>
+	</div>
+</article>
+{%- else %}
+<form method="POST" action="/ad-publisher?next=show-form&amp;complete=true" id="slideshow">
+	<ul class="noul">
+		<li class="slide">
+			<ul class="noul box wide">
+				<li>
+					<h2 class="title">
+						<span class="text">Contact Info</span>
+						<span class="sub-title">About your business</span>
+					</h2>
+					<p class="message {{ data.status }}">{{ data.message|safe }}{{ print_errors(data.add_form.csrf_token.errors) }}</p>
+					{{ data.add_form.csrf_token() }}
+					{{ data.add_form.name.label() }}
+					{{ data.add_form.name(placeholder="Business name") }}
+					{{ print_errors(data.add_form.name.errors) }}
+				</li>
+				<li>
+					{{ data.add_form.website.label() }}
+					{{ data.add_form.website(placeholder="http://www.example.com") }}
+					{{ print_errors(data.add_form.website.errors) }}
+				</li>
+				<li>
+					{{ data.add_form.contact_name.label() }}
+					{{ data.add_form.contact_name(placeholder="John Doe") }}
+					{{ print_errors(data.add_form.contact_name.errors) }}
+				</li>
+				<li>
+					{{ data.add_form.email.label() }}
+					{{ data.add_form.email(placeholder="johndoe@example.com") }}
+					{{ print_errors(data.add_form.email.errors) }}
+				</li>
+				<li class="text-right">
+					<a href="/ad-publisher?next=show-form&amp;section=1" class="button save-continue">Save &amp; Continue</a>
+				</li>
+			</ul>
+		</li>
+
+
+		<li class="slide">
+			<ul class="noul box wide">
+				<li>
+					<h2 class="title">
+						<span class="text">Business Info</span>
+						<span class="sub-title">Details of the media kit you're providing</span>
+					</h2>
+					{{ data.add_form.description.label() }}
+					{{ data.add_form.description(placeholder="Description", class="on-hover") }}
+					{{ print_errors(data.add_form.description.errors) }}
+					<span class="info"> 
+						<span class="hidden">
+							This section is what potential customers will read about your business. Giving an accurate and enticing pitch about 
+							what you do and why you do it, helps a lot.
+						</span>
+					</span>
+				</li>
+
+				<li>
+					{{ data.add_form.banner.label() }}
+					{{ data.add_form.banner(placeholder="http://www.example.com/images/poster.jpg") }}
+					{{ print_errors(data.add_form.banner.errors) }}
+					<span class="info">
+						<span class="hidden">
+							This is the image customers will identify with your company. Generally a logo is best.
+						</span>
+					</span>
+				</li>
+
+				<li>
+					{{ data.add_form.ad_details_url.label() }}
+					{{ data.add_form.ad_details_url(placeholder="http://www.example.com/ad1", class="on-hover") }}
+					{{ print_errors(data.add_form.ad_details_url.errors) }}
+					<span class="info">
+						<span class="hidden">
+							Full URL to a page/website/file, with details of this particular media kit.
+						</span>
+					</span>
+				</li>
+
+				<li>
+					{{ data.add_form.provider_industry.label() }}
+					{{ data.add_form.provider_industry(placeholder="Comma separated", class="autocomplete-industry on-hover") }}
+					{{ print_errors(data.add_form.provider_industry.errors) }}
+					<span class="info">
+						<span class="hidden">
+							Add as many but relevant keywords as you can think of. This will greatly increase the chances to 
+							match with potential customers.
+						</span>
+					</span>
+				</li>
+
+				<li>
+					{{ data.add_form.viewership_industry.label() }}
+					{{ data.add_form.viewership_industry(placeholder="Comma separated", class="autocomplete-industry") }}
+					{{ print_errors(data.add_form.viewership_industry.errors) }}
+				</li>
+				<li class="text-right">
+					<a href="/ad-publisher?next=show-form&amp;section=2" class="button save-continue">Save &amp; Continue</a>
+				</li>
+			</ul>
+		</li>
+
+		<li class="slide">
+			<ul class="noul box wide">
+				<li>
+					<h2 class="title">
+						<span class="text">Market Info</span>
+						<span class="sub-title">Details of the market you appeal to</span>
+					</h2>
+					{{ data.add_form.customer_type.label() }}
+					{{ data.add_form.customer_type(class="radio") }}
+					{{ print_errors(data.add_form.customer_type.errors) }}
+				</li>
+
+				<li>
+					{{ data.add_form.market_goal.label() }}
+					{{ data.add_form.market_goal() }}
+					{{ print_errors(data.add_form.market_goal.errors) }}
+				</li>
+
+				<li>
+					{{ data.add_form.demography.label() }}
+					{{ data.add_form.demography(class="checkboxes") }}
+					{{ print_errors(data.add_form.demography.errors) }}
+				</li>
+				<li>
+					{{ data.add_form.geography.label() }}
+					{{ data.add_form.geography(class="checkboxes") }}
+					{{ print_errors(data.add_form.geography.errors) }}
+				</li>
+				<li class="hidden geography">
+						{{ data.add_form.select_markets.label() }}
+						{{ data.add_form.select_markets(placeholder="California") }}
+						{{ print_errors(data.add_form.select_markets.errors) }}
+				</li>				
+				<li class="text-right">
+					<a href="/ad-publisher?next=show-form&amp;section=3" class="button save-continue">Save &amp; Continue</a>
+				</li>
+			</ul>
+		</li>
+
+		<li class="slide">
+			<ul class="noul box wide">
+				<li>
+					<h2 class="title">
+						<span class="text">Advertisement Info</span>
+						<span class="sub-title">Details of the media kit you're providing</span>
+					</h2>
+					{{ data.add_form.ad_name.label() }}
+					{{ data.add_form.ad_name(placeholder="Full Size Ad - 1", class="on-hover") }}
+					{{ print_errors(data.add_form.ad_name.errors) }}
+					<span class="info">
+						<span class="hidden">
+							Giving a descriptive name for the advertisement will help potential customers understand the offer better, ie. 
+							<i>Full page color advertisement, Digital marketing for 1000 clicks</i> etc.
+						</span>
+					</span>
+				</li>
+
+				<li>
+					{{ data.add_form.media_type.label() }}
+					{{ data.add_form.media_type(class="checkboxes")}}
+					{{ print_errors(data.add_form.media_type.errors) }}
+				</li>
+				<li id="custom_media_type" class="hidden">
+					{{ data.add_form.custom_media_type.label() }}
+					{{ data.add_form.custom_media_type(placeholder="Public Transport")}}
+					{{ print_errors(data.add_form.custom_media_type.errors) }}
+				</li>
+
+				<li>
+					{{ data.add_form.views.label() }}
+					{{ data.add_form.views(placeholder="10000", class="on-hover") }}
+					{{ print_errors(data.add_form.views.errors) }}
+					<span class="info">
+						<span class="hidden">
+							For cpc campaigns, please use the number of clicks estimated above.
+						</span>
+					</span>
+				</li>
+				<li>
+					{{ data.add_form.unique_views.label() }}
+					{{ data.add_form.unique_views(placeholder="5000") }}
+					{{ print_errors(data.add_form.unique_views.errors) }}
+				</li>
+
+				<li>
+					{{ data.add_form.price.label() }}
+					{{ data.add_form.price(placeholder="2250", class="on-hover") }}
+					{{ print_errors(data.add_form.price.errors) }}
+					<span class="info">
+						<span class="hidden">
+							If the Marketing Media you chose is digital, enter cost per 1000 clicks;
+							If not, enter cost per million views.
+						</span>
+					</span>
+				</li>
+				<li>
+					{{ data.add_form.campaign_length.label() }}
+					{{ data.add_form.campaign_length() }}
+					{{ print_errors(data.add_form.campaign_length.errors) }}
+				</li>
+				<li class="text-right">
+					<input type="submit" class="button" value="Complete" />
+				</li>
+			</ul>
+		</li>
+	</ul>
+</form>
+{%- endif %}
+
+{% endblock %}
+
+{% block page_js %}
+<script type="text/javascript">
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function page_media_add_onresize() {
+	var available_h = $(window).outerHeight(false) - $("#header").outerHeight(false), offset = 0;
+	$(".slide ul.noul").each(function() {
+		offset = (available_h - $(this).outerHeight(true)) / 2;
+		if(offset>40)
+			$(this).css("margin-top", offset);
+	});
+
+	var w = ($(window).outerWidth(false) / $(".slide").length), i=0;
+}
+
+function page_media_add() {
+		animation_time = 300;
+		if($("#slideshow").length > 0) {
+			Slideshow.init($("#slideshow"), {
+					"overlay": false, 
+					"use_win_height": true, 
+					"delay_text": false, 
+					"cycle": false, 
+					"auto": false,
+					"navbuttons": false
+			});
+
+			var title_nav = $('<ul id="title_nav" class="noul"></ul>');
+			$(".slide").each(function() {
+				var title = $(this).find(".title .text");
+				if(title.length > 0) {
+					title = $.trim(title.text());
+					title_nav.append('<li>'+title+'</li>');
+				}
+			});
+
+			$("#main").prepend(title_nav);
+
+			$("#title_nav li").first().addClass("active");
+			Slideshow.on_next(function() {
+				$("#title_nav li").removeClass("active");
+				$("#title_nav li:eq("+$("#slideshow .slide.active").index()+")").addClass("active");
+			});
+
+			var next_sec = parseInt(getParameterByName("section"));
+			if(next_sec>=0) {
+				Slideshow.next(next_sec);
+			}
+		}
+
+		$("#slideshow .save-continue").click(function() {
+			var item = $(this),
+				frm = $("form#slideshow"), 
+				data = frm.serialize(), 
+				url = $(this).attr("href"),
+				loading = $('<span class="loading"> </span>');
+
+			url += "&ajax-response=true";
+
+			loading.insertBefore(item);
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: data,
+				dataType: "json",
+				success: function(response) {
+					loading.remove();
+					if(response.status=="failed") {
+						frm.find("span.error").remove();
+						var error = $('<span class="error"></span>'), ec;
+						for(i in response.errors) {
+							ec = error.clone();
+							ec.text(response.errors[i].join(", "));
+							ec.insertAfter($("#"+i));
+						}
+					}
+					else if(response.status=="success") {
+						Slideshow.next();
+					}
+				}
+			});
+			return false;
+		});
+
+		// Categories Demographoes
+		$("#demography li").each(function() {
+			var item = $(this), inp = item.find("input");
+			if(inp.val().indexOf("Group#")>=0) {
+				inp.remove();
+				item.html($("<h4></h4>").append(item.find("label").text().replace("Group#", "")));
+				item.addClass("title");
+			}
+		});
+		// ===
+
+		// Geography filter
+		var hidden_container = $("#geography").closest("li").siblings(".hidden.geography");
+		$("#geography-1").change(function() {
+			if($(this).is(":checked")) {
+				hidden_container.fadeIn(200);
+			}
+			else {
+				hidden_container.fadeOut(200);
+			}
+		});
+		// ===
+
+		$('input[type="text"], textarea').addClass("text");
+		$("#geography-1").click().click();
+
+		// Show custom geo location textfield when "Other" is enabled
+		if($("#media_type-7").is(":checked")) {
+			$("#custom_media_type").fadeIn(animation_time);
+		}
+
+		$("#media_type-7").click(function() {
+			if($(this).is(":checked")) {
+				$("#custom_media_type").fadeIn(animation_time);
+			}
+			else {
+				$("#custom_media_type").fadeOut(animation_time);
+			}
+		});
+		// ===
+
+		$("#customer_type-2").click();
+
+		// Tooltip for info buttons
+		tttext.init();
+		$(".info").each(function() {
+			var t = $(this);
+			tttext.attach(t.siblings(".on-hover"), {"message": t.find(".hidden").text(), "position": "top", "offset": 8 });
+		});
+		// ====
+
+		$.getJSON( "?get=industries", function( data ) {
+			Flaav.enable_autocomplete($(".autocomplete-industry"), data);
+		});
+
+		$.getJSON( "?get=geographies", function( data ) {
+			Flaav.enable_autocomplete($("#select_markets"), data);
+		});
+
+		Flaav.add_on_rez_fns(page_media_add_onresize);
+}
+
+$(document).ready(function() {
+	page_media_add();
+});
+
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-56123185-1', 'auto');
+ga('send', 'pageview');
+</script>
+{% endblock %}

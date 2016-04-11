@@ -1,0 +1,61 @@
+{% extends "dashboard.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block body_classes %}dashboard-{{ data.dashboard_page }}{% endblock %}
+{% block content %}
+<h2 class="title">Dashboard</h2>
+
+	<section id="search_history" class="box medium">
+		<div class="left">
+			<h4 class="title">Search History</h4>
+			<ol class="items">
+				<li class="item">
+						<input type="hidden" class="details" value="" />
+						<a href="#" class="title"></a>
+						<div class="meta">
+							<span class="created-on"></span>
+							<a href="#" class="delete">Delete</a>
+							<a href="#" class="view-results">View Results</a>
+						</div>
+				</li>
+			</ol>
+		</div>
+		<div class="details">
+		</div>
+	</section>
+
+	<section class="box medium blog-feed">
+		<h4 class="title">Blog feed</h4>
+		<ol id="blog_feed">
+			<li>
+				<a class="link">
+					<span class="title"></span>
+					<div class="meta">
+						<span class="author"></span>
+						<span class="published"></span>
+					</div>
+				</a>
+			</li>
+		</ol>
+	</section>
+
+	<section class="box" id="media_statistics">
+		<h4 class="title">Media statistics</h4>
+		<canvas id="media_stat" width="240" height="240"></canvas>
+	</section>
+
+<script type="text/javascript">
+	var media_stat = [
+			{%- for item in data.media_stat %}
+					{
+						value: parseInt({{ item["count"] }}),
+						color:"",
+						highlight: "#424242",
+						label: "{{ item['customer_type'] }}"
+					}{%- if not loop.last %},{% endif %}
+			{%- endfor %}];
+</script>
+{% endblock %}
+
+{% block dashboard_plugins %}
+<script type="text/javascript" src="{{ url_for('static', filename='plugins/charts/charts.js') }}"> </script>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "dashboard.html" %}
+{% block title %}Plugins{% endblock %}
+{% block body_classes %}dashboard-plugin plugin-{{ data.plugin.id }}{% endblock %}
+{% block content %}
+{{ data.plugin.plugin_settings()|safe }}
+{% endblock %}

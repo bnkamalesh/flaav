@@ -1,0 +1,12 @@
+{%- macro print_errors(errors) %}
+	{%- if errors %}
+		{%- for error in errors %}
+		<span class="error">{{ error }}</span>
+		{%- endfor %}
+	{%- endif %}
+{%- endmacro %}
+<style>
+form.small { margin-bottom: 2em; }
+.title { text-transform: uppercase; }
+</style>
+<h2 class="title">{{ data.offer_title }}</h2>

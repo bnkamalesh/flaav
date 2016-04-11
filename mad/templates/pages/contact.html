@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{%- macro print_errors(errors) %}
+	{%- if errors %}
+		{%- for error in errors %}
+		<span class="error">{{ error }}</span>
+		{%- endfor %}
+	{%- endif %}
+{%- endmacro %}
+{% block meta_desc %}Contact us{% endblock %}
+{% block title %}Contact{% endblock %}
+{% block body_class %}front page page-{{ page_name }}{% endblock %}
+{% block content %}
+<article>
+<form action="" method="post" class="small">
+<ul class="noul">
+	<li>
+		<h2>Contact us</h2>
+		{{ data.contact_form.csrf_token() }}
+		{{ data.contact_form.name(placeholder="Your Name", required="") }}
+		{{ print_errors(data.contact_form.name.errors) }}
+	</li>
+	<li>
+		{{ data.contact_form.email(placeholder="Your Email", required="") }}
+		{{ print_errors(data.contact_form.email.errors) }}
+	</li>
+	<li>
+		{{ data.contact_form.message(placeholder="Message", required="") }}
+		{{ print_errors(data.contact_form.message.errors) }}
+	</li>
+	<li>
+		Or you can contact us directly via email 
+		<a href="mailto:jordan@flaav.com?subject=Flaav-Contact">jordan@flaav.com</a> or 
+		<a href="mailto:kbn@flaav.com?subject=Flaav-Contact">kbn@flaav.com</a>.
+	</li>
+	<li>
+		<input type="checkbox" id="verify_human_chk" value="sample_string"/>
+		<label for="verify_human_chk">Please verify you're human by checking this.</label>
+		{{ data.contact_form.verify_human(value="") }}
+		{{ print_errors(data.contact_form.verify_human.errors) }}
+	</li>
+	<li>
+		<p class="message {{ data.status }}">{{ data.message }}</p>
+		<input type="submit" value="Send" />
+	</li>
+</ul>
+</form>
+</article>
+{% endblock %}

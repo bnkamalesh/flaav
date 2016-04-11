@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block meta_desc %}The ultimate media planning tool{% endblock %}
+{% block title %}{% endblock %}
+{% block body_class %}front page page-{{ page_name }}{% endblock %}
+{% block content %}
+<section class="page">
+	<article>
+	<h2 class="title">
+		Flaav
+		<span class="sub-title">About us</span>
+	</h2>
+
+	<p>Welcome to Flaav (we like to pronounce it <i>Flave</i>, but to each their own).</p>
+
+	<p><strong>Flaav creates media plans and marketing alternatives.</strong></p>
+
+	<p>
+	Media planning helps customers determine the best combination of media to achieve their marketing campaign objectives. This process is extremely effective but often over looked because it is difficult, time consuming, and expensive. Flaav bridges the gap by using a complex search algorithm to help automate the media planning process. Flaav is able to save our customer's time and money by creating effective Media Plans.
+	</p>
+
+	<p>
+	Our media plans provide you with the best outlets for your marketing campaign. The combination of CPA, budget, impressions, and a variety of other factors are balanced in the media plan. Flaav's Media Plans give you access to new resources to market your business. From there meeting your new advertising partner couldn't be easier. We provide all of the information you need to reach out and make an easy acquaintance.  
+	</p>
+
+	<p>
+	Our goal at Flaav is to solve the issues businesses face when developing marketing plans and advertising their business. We designed our suite of tools to help automate monotonous tasks which are time consuming and difficult. Most importantly, we try and tackle issues all small businesses face with creative twist.  We look at problems differently and try and find a way to use new technology on old processes. Flaav uses complex algorithms, automation, and program driven processes, in order to offer a highly effective, low cost solution, to optimizing your marketing campaign.
+	</p>
+
+	<p>Feel free to ask us any question, or just say hello. We would love to <a href="{{ url_for('pages.index', name='contact') }}">hear from you</a>.</p>
+	</article>
+</section>
+
+<section class="page">
+	<article>
+		<h2 class="title center" style="margin-bottom: 2em;">The team</h2>
+		<div class="left">
+			<h3 class="name jordan">Jordan Luft</h3>
+			<p>
+			Jordan is the face of Flaav. He has experience with marketing and creating marketing solutions from his past experience running 
+			Velocity Local, a subsidiary of public company – LiveDeal Inc. Utilizing his knowledge of marketing solutions he helped build 
+			Flaav into what it is today. Jordan is the man on the ground and the person who will talk to anyone about anything (although he 
+			prefers talking about Flaav). His main duties include onboarding and supporting Flaav's clients and creating new tools to simplify 
+			customer's marketing efforts.
+			</p>
+			<a href="mailto:jordan@flaav.com?subject=Flaav-about" class="email">jordan@flaav.com</a>
+		</div>
+		<div class="right">
+			<h3 class="name kam">Kamaleshwar B N</h3>
+			<p>
+				Kam is a creative and skilled python developer who had the brilliant idea to start Flaav.
+				His initial concept has pivoted, but the passion for Flaav has never gone away.
+				Kam is the muscle behind Flaav's marketing tools. He creates some of the most innovative and helpful products used by our clients.
+			</p>
+			<a href="mailto:kbn@flaav.com?subject=Flaav-about" class="email">kbn@flaav.com</a>
+		</div>
+	</article>
+</section>
+{% endblock %}
+{% block page_js %}
+<script type="text/javascript">
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-56123185-1', 'auto');
+	ga('send', 'pageview');
+</script>
+{% endblock %}

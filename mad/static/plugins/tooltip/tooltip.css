@@ -1,0 +1,38 @@
+#tooltip {
+	font-size: 14px;
+	line-height: 20px;
+
+	max-width: 320px;
+	background: #fff;
+	box-shadow: 0 0 1px #aaa;
+	color: #404040;
+
+	padding: 4px 12px;
+
+	position: absolute;
+	top: auto;
+	left: auto;
+	right: auto;
+	bottom: auto;
+	z-index: 100;
+	
+	display: none;
+}
+
+#tooltip .point {
+	height: 10px;
+	width: 12px;
+
+	position: absolute;
+	display: block;
+}
+	#tooltip.top .point {
+		background: transparent  url("images/point.png") no-repeat center center;
+		background-size: 100% 100%;
+		bottom: -9px;
+		left: 40%;
+	}
+
+.no-overflow { overflow: hidden;}
+
+#tooltip, #tooltip .point { transition: none;}

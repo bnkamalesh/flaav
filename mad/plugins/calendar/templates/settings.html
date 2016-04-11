@@ -1,0 +1,9 @@
+{%- macro print_errors(errors) %}
+	{%- if errors %}
+		{%- for error in errors %}
+		<span class="error">{{ error }}</span>
+		{%- endfor %}
+	{%- endif %}
+{%- endmacro %}
+<h2 class="title">Calendar Settings</h2>
+<p>The Flaav calendar settings</p>

@@ -1,0 +1,8 @@
+Name = DMAT
+Classname = DMAT
+Filename = dmat
+id = dmat
+Author = Kamaleshwar
+Version = 0.5
+Website = http://flaav.com
+Description = Don't Miss A Tweet.

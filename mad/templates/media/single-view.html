@@ -1,0 +1,113 @@
+{% extends "dashboard.html" %}
+{% block body_classes %}media media-single-view{% endblock %}
+{% block content %}
+{%- if data.media_item %}
+<article class="media box wide">
+	<div class="top">
+		<h2 class="title">{{ data.media_item["name"] }}</h2>
+		<ul class="noul">
+			<li class="email">
+				<a href="mailto:{{ data.media_item['email'] }}"><span class="icon"> </span> {{ data.media_item["email"] }}</a>
+			</li>
+			{%- if data.media_item["contact_phone"] %}
+			<li class="phone">
+				<span class="icon"> </span>{{ data.media_item["contact_phone"] }}
+			</li>
+			{%- endif %}
+			{%- if data.media_item["website"] %}
+			<li class="www">
+				<a href="{{ data.media_item['website'] }}"><span class="icon"> </span> {{ data.media_item["website"] }}</a>
+			</li>
+			{%- endif %}
+			<li class="price">
+				<span class="currency"> </span> {{ data.media_item["price"] }}
+			</li>
+			<li><span>Industry: <span class="industry value">{{ data.media_item["provider_industry"] }}</span></span></li>
+		</ul>
+	</div>
+	{%- if data.media_item["banner"] %}
+	<div class="banner">
+		{%- if data.media_item["website"] %}
+		<a href="{{ data.media_item['website'] }}">
+			<img src="{{ data.media_item['banner'] }}" alt="{{ data.media_item['name'] }}" />
+		</a>
+		{%- else %}
+		<img src="{{ data.media_item['banner'] }}" alt="{{ data.media_item['name'] }}" />
+		{%- endif %}
+	</div>
+	{%- endif %}
+	<h4>About</h4>
+	<p class="description">{{ data.media_item["description"] }}</p>
+	<h4>Info</h4>
+	<table>
+		<tbody>
+			<tr>
+				<th>Ad-name</th>
+				<td>{{ data.media_item["ad_name"] }}</td>
+			</tr>
+			{%- if data.media_item["created_on"] %}
+			<tr>
+				<th>Created on</th>
+				<td><span class="value time updated-on">{{ data.media_item["created_on"] }}</span></td>
+			</tr>
+			{%- endif %}
+			{%- if data.media_item["updated_on"] %}
+			<tr>
+				<th>Last updated on</th>
+				<td><span class="value time updated-on">{{ data.media_item["updated_on"] }}</span></td>
+			</tr>
+			{%- endif %}
+			<tr>
+				<th>Market goal</th>
+				<td><span class="market-goal value">{{ data.media_item["market_goal"] }}</span></td>
+			</tr>
+			<tr>
+				<th>Campaign length</th>
+				<td><span class="campaign-length value">{{ data.media_item["campaign_length"] }}</span></td>
+			</tr>
+			<tr>
+				<th>Customer type</th>
+				<td><span class="customer-type value">{{ data.media_item["customer_type"] }}</span></td>
+			</tr>
+			<tr>
+				<th>Media type(s)</th>
+				<td><span class="media-type value">{{ data.media_item["media_type"] }}</span></td>
+			</tr>
+			<tr>
+				<th>Viewership industry</th>
+				<td><span class="target-industry value">{{ data.media_item["viewership_industry"] }}</span></td>
+			</tr>
+			<tr>
+				<th>Demography</th>
+				<td><span class="demography value">{{ data.media_item["demography"] }}</span></td>
+			</tr>
+			<tr>
+				<th>Locations</th>
+				<td><span class="geography value">{{ data.media_item["geography"] }}</span></td>
+			</tr>
+			{%- if data.media_item["views"] %}
+			<tr>
+				<th>Views</th>
+				<td><span class="views value">{{ data.media_item["views"] }}</span></td>
+			</tr>
+			{%- endif %}
+			{%- if data.media_item["unique_views"] %}
+			<tr>
+				<th>Unique views</th>
+				<td><span class="unique-views value">{{ data.media_item["unique_views"] }}</span></td>
+			</tr>
+			{%- endif %}
+			{%- if data.media_item["frequency"] %}
+			<tr>
+				<th>Frequency</th>
+				<td><span class="frequency value">{{ data.media_item["frequency"] }}</span></td>
+			</tr>
+			{%- endif %}
+		</tbody>
+	</table>
+</article>
+{%- else %}
+<h3>Hey there,</h3>
+<h4>Either that's the wrong URL or you do not have permission to view this page.</h4>
+{%- endif %}
+{% endblock %}

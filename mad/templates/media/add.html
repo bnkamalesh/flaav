@@ -1,0 +1,167 @@
+{% extends "dashboard.html" %}
+{%- macro print_errors(errors) %}
+	{%- if errors %}
+		{%- for error in errors %}
+		<span class="error">{{ error }}</span>
+		{%- endfor %}
+	{%- endif %}
+{%- endmacro %}
+{% block body_classes %}media media-add{% endblock %}
+{% block content %}
+<form method="POST" action="{{ url_for('media.index', action='add') }}" class="small small-wider">
+	<ul class="noul">
+		<li>
+			<h2 class="title">Media Plan
+				<span class="sub-title">Add new media plan</span>
+			</h2>
+			<p class="message {{ data.status }}">{{ data.message|safe }}{{ print_errors(data.add_form.csrf_token.errors) }}</p>
+			{{ data.add_form.csrf_token() }}
+			{{ data.add_form.name.label() }}
+			{{ data.add_form.name(placeholder="Name") }}
+			{{ print_errors(data.add_form.name.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.description.label() }}
+			{{ data.add_form.description(placeholder="Description") }}
+			{{ print_errors(data.add_form.description.errors) }}
+			<span class="info"> 
+				<span class="hidden">
+					This section is what potential customers will read about your business. Giving an accurate and enticing pitch about 
+					what you do and why you do it, helps a lot.
+				</span>
+			</span>
+		</li>
+		<li>
+			{{ data.add_form.website.label() }}
+			{{ data.add_form.website(placeholder="http://www.example.com") }}
+			{{ print_errors(data.add_form.website.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.banner.label() }}
+			{{ data.add_form.banner(placeholder="http://www.example.com/images/poster.jpg") }}
+			{{ print_errors(data.add_form.banner.errors) }}
+			<span class="info">
+				<span class="hidden">
+					This is the image customers will identify with your company. Generally a logo is best.
+				</span>
+			</span>
+		</li>
+		<li>
+			{{ data.add_form.email.label() }}
+			{{ data.add_form.email(placeholder="johndoe@example.com") }}
+			{{ print_errors(data.add_form.email.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.contact_name.label() }}
+			{{ data.add_form.contact_name(placeholder="John Doe") }}
+			{{ print_errors(data.add_form.contact_name.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.contact_phone.label() }}
+			{{ data.add_form.contact_phone(placeholder="1 23456 7890") }}
+			{{ print_errors(data.add_form.contact_phone.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.price.label() }}
+			{{ data.add_form.price() }}
+			{{ print_errors(data.add_form.price.errors) }}
+			<span class="info">
+				<span class="hidden">
+					Please describe the type of advertisement below in the name section. If it is digital advertising, 
+					use cost per mil, or cost per 1000 clicks.
+				</span>
+			</span>
+		</li>
+		<li>
+			{{ data.add_form.views.label() }}
+			{{ data.add_form.views() }}
+			{{ print_errors(data.add_form.views.errors) }}
+			<span class="info">
+				<span class="hidden">
+					For cpc campaigns, please use the number of clicks estimated above.
+				</span>
+			</span>
+		</li>
+		<li>
+			{{ data.add_form.unique_views.label() }}
+			{{ data.add_form.unique_views() }}
+			{{ print_errors(data.add_form.unique_views.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.ad_name.label() }}
+			{{ data.add_form.ad_name(placeholder="Full Size Ad - 1") }}
+			{{ print_errors(data.add_form.ad_name.errors) }}
+			<span class="info">
+				<span class="hidden">
+					Giving a descriptive name for the advertisement will help potential customers understand the offer better, ie. 
+					<i>Full page color advertisement, Digital marketing for 1000 clicks</i> etc.
+				</span>
+			</span>
+		</li>
+		<li>
+			{{ data.add_form.ad_details_url.label() }}
+			{{ data.add_form.ad_details_url(placeholder="http://www.example.com/ad1") }}
+			{{ print_errors(data.add_form.ad_details_url.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.media_type.label() }}
+			{{ data.add_form.media_type(class="checkboxes")}}
+			{{ print_errors(data.add_form.media_type.errors) }}
+		</li>
+		<li id="custom_media_type" class="hidden">
+			{{ data.add_form.custom_media_type.label() }}
+			{{ data.add_form.custom_media_type(placeholder="Public Transport")}}
+			{{ print_errors(data.add_form.custom_media_type.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.market_goal.label() }}
+			{{ data.add_form.market_goal() }}
+			{{ print_errors(data.add_form.market_goal.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.customer_type.label() }}
+			{{ data.add_form.customer_type(class="radio") }}
+			{{ print_errors(data.add_form.customer_type.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.campaign_length.label() }}
+			{{ data.add_form.campaign_length() }}
+			{{ print_errors(data.add_form.campaign_length.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.provider_industry.label() }}
+			{{ data.add_form.provider_industry(placeholder="Comma separated", class="autocomplete-industry") }}
+			{{ print_errors(data.add_form.provider_industry.errors) }}
+			<span class="info">
+				<span class="hidden">
+					Add as many but relevant keywords as you can think of. This will greatly increase the chances to 
+					match with potential customers.
+				</span>
+			</span>
+		</li>
+		<li>
+			{{ data.add_form.viewership_industry.label() }}
+			{{ data.add_form.viewership_industry(placeholder="Comma separated", class="autocomplete-industry") }}
+			{{ print_errors(data.add_form.viewership_industry.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.demography.label() }}
+			{{ data.add_form.demography(class="checkboxes") }}
+			{{ print_errors(data.add_form.demography.errors) }}
+		</li>
+		<li>
+			{{ data.add_form.geography.label() }}
+			{{ data.add_form.geography(class="checkboxes") }}
+			{{ print_errors(data.add_form.geography.errors) }}
+			<div class="hidden">
+				{{ data.add_form.select_markets.label() }}
+				{{ data.add_form.select_markets(placeholder="California") }}
+				{{ print_errors(data.add_form.select_markets.errors) }}
+			</div>
+		</li>
+		<li>
+			<input type="submit" value="Add" />
+		</li>
+	</ul>
+</form>
+{% endblock %}

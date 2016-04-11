@@ -1,0 +1,79 @@
+<style>
+.tweets { 
+	background: #fff;
+	width: 100%;
+	max-width: 500px;
+	padding: 1em;
+}
+	.tweets .left, .tweets .right { 
+		float: none; 
+		display: inline-block; 
+		vertical-align: middle;
+	}
+	.tweets .left { width: 15%; }
+	.tweets .right { width: 84%; }
+	.tweets .avatar {
+		display: inline-block;
+		vertical-align: middle;
+		height: 56px;
+		width: 56px;
+		border-radius: 56px;
+		border: 1px solid #ccc;
+		overflow: hidden;
+	}
+		.tweets .avatar img {
+			width: 100%;
+			height: auto;
+		}
+
+	.tweets .text { margin: 0; }
+	.tweets .time {
+		color: #aaa;
+		font-size: 0.75em;
+		line-height: 1em;
+	}
+
+	.tweets li { 
+		box-sizing: border-box; 
+		padding-bottom: 1em;
+		margin-bottom: 1em;
+		border-bottom: 1px solid #eee;
+	}
+		.tweets li:last-child {
+			margin-bottom: 0;
+			border-bottom: none;
+		}
+
+		.tweets li:hover { 
+			border-bottom-color: #aaa; 
+			color: #222;
+		}
+		.tweets li:hover .time { color: #888; }
+
+</style>
+<h2 class="title">
+	DMAT 
+	<span class="sub-title">Don't miss a tweet</span>
+	<a href="{{ data.url_for('pluginloader.index', plugin_id=data.plugin_id, action='settings')}}" class="button">settings</a>
+</h2>
+<p class="description">
+Don't miss a tweet is a social-media (specific to Twitter)
+plugin. It'll periodically generate tweets based on your settings.
+</p>
+{%- if data.tweets %}
+<h3>{{ data.twitter_name }}'s tweets ({{ data.twitter_screen_name }})</h3>
+<ul class="noul tweets box">
+	{%- for tweet in data.tweets %}
+	<li>
+		<div class="left">
+			<span class="avatar"><img src="{{ data.profile_image }}" alt="{{ data.twitter_screen_name}}" /></span>
+		</div>
+		<div class="right">
+			<h4 class="text">{{ tweet.text }}</h4>
+			<span class="time">{{ tweet.created_at }}</span>
+		</div>
+		<div class="clear"> </div>
+	</li>
+	{%- endfor %}
+</ul>
+{%- endif %}

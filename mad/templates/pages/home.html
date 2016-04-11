@@ -1,0 +1,161 @@
+{% extends "layout.html" %}
+{% block meta_desc %}The ultimate media planning tool{% endblock %}
+{% block body_class %}front page page-{{ page_name }}{% endblock %}
+{% block content %}
+<a href="{{ url_for('pages.index', name='contact') }}" id="contact_us" class="button">Contact Us</a>
+<section class="slideshow page" rel="Slideshow">
+	<div id="slideshow">
+		<ul class="noul">
+			<li class="slide" style="background-image: url('{{ url_for('static', filename='images/stock/dac.jpg') }}');">
+				<div class="text">
+					<h1 class="title">Flaav</h1>
+					<p>
+						Flaav creates media plans and marketing alternatives which automate the tough marketing challenges you face.
+						Our Media Plans point you in the best direction to advertise your business, so your campaign will be light 
+						years more effective! And you spend lesser time and effort marketing your business.
+					</p>
+					<a href="{{ url_for('search.index') }}" class="button try-it">Try it out now</a>
+					<a href="{{ url_for('dashboard.index') }}" class="button get-started">Get Started</a>
+				</div>
+			</li>
+			<li class="slide" style="background-image: url('{{ url_for('static', filename='images/stock/apple-gear-looking-pretty.jpg') }}'); ">
+				<div class="text">
+					<h1 class="title">Your marketing plans on steroids!</h1>
+					<p>
+						Our unique set of marketing services makes it easy to stay in control of your marketing efforts.  We created have 
+						tools to automate twitter content, run and track promotional offers, create advertisements or digital marketing, 
+						and organize your entire marketing campaign. Spend less time while doing more than ever!
+					</p>
+					<a href="{{ url_for('pages.index', name='services') }}" class="button read-more">Read more</a>
+					<a href="{{ url_for('dashboard.index') }}" class="button get-started">Get Started</a>
+				</div>
+			</li>
+			<li class="slide" style="background-image: url('{{ url_for('static', filename='images/stock/mac-glasses.jpg') }}');">
+				<div class="text">
+					<h1 class="title">Services that work for you</h1>
+					<p>
+						All of our tools work cohesively to optimize your marketing performance.  Using them together will make your life 
+						extraordinarily easier and save you time.  Flaav can reduce your budget for social media, promotional offers, 
+						advertising and marketing management.
+					</p>
+					<a href="{{ url_for('pages.index', name='services') }}#integration" class="button read-more">Read more</a>
+					<a href="{{ url_for('dashboard.index') }}" class="button get-started">Get Started</a>
+				</div>
+			</li>
+			<li class="slide" style="background-image: url('{{ url_for('static', filename='images/stock/city-morning.jpg') }}');">
+				<div class="text">
+					<h1 class="title">Look what they've been saying</h1>
+					<p>Flaav is fantastic!</p>
+					<a href="{{ url_for('pages.index', name='services') }}#integration" class="button read-more">Read more</a>
+					<a href="{{ url_for('dashboard.index') }}" class="button get-started">Get Started</a>
+				</div>
+			</li>
+		</ul>
+	</div>
+</section>
+<section class="tools page" rel="Tools">
+	<ul class="noul tools">
+		<li class="r1 search">
+			<a href="{{ url_for('pages.index', name='services') }}/#search" class>
+				<span class="thumb"> </span>
+				<div class="text">
+					<h3>Flaav Media Planner</h3>
+					<p>
+						Flaav Media Planner connects you with the best places to market your business.
+						See your marketing efficiency sky-rocket!
+					</p>
+				</div>
+			</a>
+		</li><li class="r1 dmat">
+			<a href="{{ url_for('pages.index', name='services') }}/#dmat">
+				<span class="thumb"> </span>
+				<div class="text">
+					<h3>Don't Miss a Tweet</h3>
+					<p>
+						Keeping up with social media is a burden.  Let us handle your twitter.  
+						We create content you like, and post for you.
+							
+					</p>
+				</div>
+			</a>
+		</li><li class="r1 promo-genius">
+			<a href="{{ url_for('pages.index', name='services') }}#promo_genius">
+				<span class="thumb"> </span>
+				<div class="text">
+					<h3>Promo Genius</h3>
+					<p>
+						Tracking promotional offers has never been easier.  Promo Genius creates, 
+						tracks, and provides data analysis for promotions and coupons.
+					</p>
+				</div>
+			</a>
+		</li><li class="dacreator">
+			<a href="{{ url_for('pages.index', name='services') }}/#dacreator">
+				<span class="thumb"> </span>
+				<div class="text">
+					<h3>Digital Ad Creator</h3>
+					<p>
+						Hiring good designers is expensive and hard.  Flaav's Digital Ad Creator 
+						will help you create your perfect digital advertisement.
+					</p>
+				</div>
+			</a>
+		</li><li class="calendar">
+			<a href="{{ url_for('pages.index', name='services') }}/#dacreator">
+				<span class="thumb"> </span>
+				<div class="text">
+					<h3>Media Calendar</h3>
+					<p>
+						Track all of your marketing efforts.
+					</p>
+				</div>
+			</a>
+		</li><li class="integrated">
+			<a href="{{ url_for('pages.index', name='services') }}/#dacreator">
+				<span class="thumb"> </span>
+				<div class="text">
+					<h3>Complete Integration</h3>
+					<p>
+						All of the services have been designed to work together in order to 
+						enhance our customers marketing efforts.
+					</p>
+				</div>
+			</a>
+		</li>
+	</ul>
+</section>
+<section class="about page" rel="About">
+<div class="left">
+	<div class="text">
+		<h1 class="title">Flaav Makes Marketing Easier</h1>
+		<div class="sub-title">
+			Get access to numerous tools that will save you time and money while increasing your marketing success.
+		</div>
+		<p>
+			We created Flaav with YOU in mind.  We know you don’t have the time or the experience to market your 
+			business so we designed our set of tools to automate everything – leaving you with more time, and 
+			less headache.
+		</p>
+		<p>
+			Flaav helps you find the BEST places to advertise, simplifies and tracks your promotions, intelligently 
+			tweets for you, and creates beautiful advertisements, all while keeping your marketing plan organized!
+		</p>
+		<a href="#" class="button">More</a>
+	</div>
+	<div class="clear"> </div>
+</div>
+<div class="right" style="background-image: url('{{ url_for('static', filename='images/stock/ny-winter-view.jpg') }}'); ">
+	<div class="text">
+		<h1>
+			<span class="wide">Flaav</span>
+			only costs
+			<span class="currency"></span>40 / Month
+		</h1>
+		<a href="{{ url_for('search.index') }}" class="button">Try it out</a>
+		<a href="{{ url_for('dashboard.index') }}" class="button">Get started</a>
+	</div>
+	<div class="overlay"> </div>
+	<div class="clear"> </div>
+</div>
+</section>
+{% endblock %}

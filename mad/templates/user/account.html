@@ -1,0 +1,47 @@
+{% extends "dashboard.html" %}
+{%- macro print_errors(errors) %}
+  {%- if errors %}
+    {%- for error in errors %}
+    <span class="error">{{ error }}</span>
+    {%- endfor %}
+  {%- endif %}
+{%- endmacro %}
+{% block title %}Account Settings{% endblock %}
+{% block body_classes %}user user-profile{% endblock %}
+{% block content %}
+<h2 class="title">Account
+	<span class="sub-title">{{ current_user.get_name() }}</span>
+</h2>
+<form action="{{ url_for('user.index', action='account', do='save') }}" method="post" class="account small">
+	<ul class="noul">
+		<li class="message {{ data.status }}">
+            {%- if data.message %}
+              {{ data.message|safe }}
+            {%- else %}
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  {% for message in remove_duplicates(messages) %}
+                    {{ message|safe }}
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+            {%- endif %}
+		</li>
+		<li>Login / Email: {{ current_user.email }}</li>
+		<li>
+			{{ data.update_form.name(placeholder="Name", required="", autofocus="") }}
+			{{ print_errors(data.update_form.name.errors) }}
+			{{ data.update_form.csrf_token }}
+		</li>
+		<li>
+			{{ data.update_form.password(placeholder="New password", id="update_password") }}
+			{{ print_errors(data.update_form.password.errors) }}
+		</li>
+		<li>
+			{{ data.update_form.confirm(placeholder="Repeat password") }}
+			{{ print_errors(data.update_form.confirm.errors) }}
+		</li>
+		<li><input type="submit" class="button" id="do_register" value="Save" /></li>
+	</ul>
+</form>
+{% endblock %}

@@ -1,0 +1,35 @@
+<style>
+.box {
+	max-width: 400px;
+	margin-bottom: 2em;
+}
+</style>
+<h2 class="title">
+	Promo Genius
+	<a href="{{ data.url_for('pluginloader.index', plugin_id=data.plugin_id, action='settings')}}" class="button">settings</a>
+	<span class="sub-title">A promotional code/coupon system</span>
+</h2>
+
+<section class="box">
+	<h4>Current promotions</h4>
+	<ol id="current_promotions"></ol>
+</section>
+
+<section class="box">
+	<h4>Expired promotions</h4>
+	<ol id="expired_promotions"></ol>
+</section>
+
+<script type="text/javascript">
+var PromoGenius = (function() {
+	return {
+		init: function() {
+			return;
+		}
+	};
+}());
+
+$(document).ready(function(){
+	PromoGenius.init();
+});
+</script>

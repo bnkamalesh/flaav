@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Flaav {%- block meta_desc %}{%- endblock %}">
+  <meta name="robots" content="index, follow">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Flaav {% block title %}{% endblock %}</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon_blue_16.ico') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon_blue_32.ico') }}">
+
+ {%- if plugin_urls %}
+  {%- for url in plugin_urls: %}
+    {%- if ".css" in url: %}
+  <link type="text/css" rel="stylesheet" href="{{ url }}">
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+  {% block dashboard_css %}{% endblock %}
+
+  <script type="text/javascript">var MODULE="{{ self.body_class() }}";</script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"> </script>
+  <script type="text/javascript" src="{{ url_for('static', filename='minified/plugins.js') }}"> </script>
+  {%- block dashboard_plugins %}{%- endblock %}
+  
+  <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"> </script>
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <div id="wrap">
+    <header id="header">
+      <a href="/" id="logo"> <span class="version">Alpha v0.5</span></a>
+
+      <nav id="topnav">
+        <a href="#" id="mini_menu"> </a>
+        <ul class="noul horizontal-menu">
+          <li class="home"><a href="{{ url_for('pages.index', name='home') }}">Home</a></li>
+          <li class="about"><a href="{{ url_for('pages.index', name='about') }}">About</a></li>
+          <li class="services">
+            <a href="{{ url_for('pages.index', name='services') }}">Services</a>
+            <ul class="noul sub-menu">
+              <li class="search">
+                <a href="{{ url_for('pages.index', name='services') }}#flaav_mp">
+                  <span class="icon"> </span>
+                  Flaav Media Planning
+                </a>
+              </li>
+
+              <li class="dmat">
+                <a href="{{ url_for('pages.index', name='services') }}#dmat">
+                  <span class="icon"> </span>
+                  DMAT
+                </a>
+              </li>
+
+              <li class="promo-genius">
+                <a href="{{ url_for('pages.index', name='services') }}#promo_genius">
+                  <span class="icon"> </span>
+                  Promo Genius
+                </a>
+              </li>
+
+              <li class="calendar">
+                <a href="{{ url_for('pages.index', name='services') }}#flaav_calendar">
+                  <span class="icon"> </span>
+                  Flaav Media Calendar
+                </a>
+              </li>
+
+              <li class="dacreator">
+                <a href="{{ url_for('pages.index', name='services') }}#dacreator">
+                  <span class="icon"> </span>
+                  Digital Ad Creator
+                </a>
+              </li>
+
+              <li class="integrated">
+                <a href="{{ url_for('pages.index', name='services') }}#integrated">
+                  <span class="icon"> </span>
+                  Integrated services
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="resources"><a href="http://blog.flaav.com">Resources</a></li>
+          <li class="ad-publisher"><a href="{{ url_for('media.public_add') }}">Ad Publishers</a></li>
+          {%- if current_user.is_authenticated() %}
+            <li class="dashboard"><a href="{{ url_for('dashboard.index') }}">Dashboard</a></li>
+            <li class="logout"><a href="{{ logout_url }}" class="logout">Logout ({{ current_user.get_name() }})</a></li>
+          {%- else %}
+            <li class="search"><a href="{{ url_for('search.index') }}">Try it</a></li>
+            <li class="get-started"><a href="{{ url_for('dashboard.index') }}">Get Started</a></li>
+            <li class="login"><a href="{{ login_url }}" class="login">Log In / Register</a></li>
+          {%- endif %}
+          <div class="clear"> </div>
+        </ul>
+        <div class="clear"> </div>
+      </nav>
+    </header>
+
+    {%- block sidebar %}{%- endblock %}
+    <section id="main">
+    {%- block content %}{%- endblock %}
+    </section>
+
+  <div class="clear"> </div>
+  <footer id="footer">
+    <span class="copyright">
+      <span class="logo"> </span>
+      <span class="year">&copy; {{ current_year or '<span class="current-year"> </span>'|safe }}</span>
+    </span>
+    <ul class="noul links">
+      <li>
+        <a href="{{ url_for('pages.index', name='home') }}">Home</a>
+        <a href="{{ url_for('pages.index', name='about') }}">About</a>
+        <a class="contact" href="{{ url_for('pages.index', name='contact') }}">Contact</a>
+      </li>
+      <li>
+        <a href="{{ url_for('pages.index', name='services') }}">Services</a>
+        <a href="{{ url_for('pages.index', name='resources') }}">Resources</a>
+        <a href="http://blog.flaav.com/">Blog</a>
+      </li>
+      <li class="last">
+        <a href="{{ url_for('search.index') }}">Search</a>
+        <a href="{{ url_for('dashboard.index') }}">{%- if current_user.is_authenticated() %}Dashboard{%- else %}Get started{%- endif %}</a>
+        {%- if not current_user.is_authenticated() %}
+          <a href="{{ login_url }}" class="login">Log In / Register</a>
+        {%- else %}
+          <a href="{{ url_for('user.index', action='account') }}" class="my-account">My account</a>
+          <a href="{{ logout_url }}" class="logout">Logout({{ current_user.get_name() }})</a>
+        {%- endif %}
+      </li>
+    </ul>
+  </footer>
+</div><!-- wrap -->
+{% block dashboard_js %}{% endblock %}
+{% block page_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,424 @@
+{%- macro print_errors(errors) %}
+	{%- if errors %}
+		{%- for error in errors %}
+		<span class="error">{{ error }}</span>
+		{%- endfor %}
+	{%- endif %}
+{%- endmacro %}
+<style>
+form.small label { display: block; }
+
+.dmat-form  { margin-bottom: 2em; }
+.dmat-form li:last-child, .dmat-form:last-child { margin-bottom: 0; }
+
+.dmat-forms {
+	max-width: 50%;
+	margin-top: 2em;
+	box-sizing: border-box;
+}
+
+.dmat-message {
+	font-size: 0.75em;
+	line-height: 1.333em;
+	margin-bottom: 3em;
+	padding: 1em;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+}
+.dmat-message:empty { display: none; }
+
+textarea#tweet { 
+	margin-top: 1em;
+	width: 80%;
+	min-height: 200px;
+}
+#choose_word_pool { vertical-align: middle; }
+#words_list {
+	width: 40%;
+	position: absolute;
+	right: 2%;
+	top: auto;
+	box-sizing: border-box;
+}
+	.word-list {
+		overflow-y: auto;
+		margin: 0;
+		padding: 0 0 0 1.5em;
+	}
+	.word-list li { padding-left: 0.5em; }
+
+#twitter_button {
+	background: #00ACEE url("/static/images/twitter_logo.png") no-repeat 8px center;
+	background-size: auto 50%;
+	color: #fff;
+	text-transform: uppercase;
+	padding: 1em 1.5em 1em 3em;
+	width: auto;
+}
+	#twitter_button:hover {
+		background-color: #452050;
+	}
+.twitter-info {
+	display: inline-block;
+	padding: 0.75em 0.75em;
+	border: 1px solid #999 !important;
+}
+.twitter-info .profile-picture {
+	width: 48px;
+	height: auto;
+	border-radius: 48px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.twitter-info .name, .twitter-info .username {
+	display: inline-block;
+	vertical-align: middle;
+}
+</style>
+
+<h2 class="title">
+	DMAT Settings
+	<span class="sub-title">
+		Add new entries to the DMAT data set. Change settings for posting tweets.
+	</span>
+</h2>
+<ul class="noul dmat-forms">
+	<li><div class="dmat-message {{ data.status }}">{{ data.message }}</div></li>
+	<li class="dmat-form">
+		<form action="?settings-type=posting-frequency" method="post" class="small">
+			<ul class="noul">
+				<li>
+					<h3>Twitter Settings</h3>
+					{{ data.settingsform.csrf_token() }}
+					{{ data.settingsform.post_frequency.label() }}
+					{{ data.settingsform.post_frequency() }}
+					{{ print_errors(data.settingsform.post_frequency.errors) }}
+				</li>
+				<li>
+					<a href="?settings-type=twitter-login" id="twitter_button" class="button {% if data.twitter_screen_name %}change{% endif %}">
+					{%- if data.twitter_screen_name %}
+					Change
+					{%- else %}
+					Setup
+					{%- endif %}
+					Twitter account
+					</a>
+				</li>
+				{%- if data.twitter_name %}
+				<li>
+					<a class="twitter-info" href="https://twitter.com/{{ data.twitter_screen_name }}">
+						{%- if data.profile_image_url_https %}
+						<img src="{{ data.profile_image_url_https }}" alt="{{ data.twitter_name }}" class="profile-picture" />
+						{%- endif %}
+						<span class="name">{{ data.twitter_name }}</span>
+						(<span class="username">{{ data.twitter_screen_name }}</span>)
+					</a>
+				</li>
+				{%- endif %}
+				<li>
+					<input type="submit" value="Save" class="button small" />
+				</li>
+			</ul>
+		</form>
+	</li>
+	{%- if data.current_user.get_role()=="admin" %}
+	<li class="dmat-form" id="new_group">
+		<form action="?settings-type=new-group#new_group" method="post" id="new_group_form" class="small">
+			<ul class="noul">
+				<li>
+					<h3>Add new group</h3>
+					<div id="parent_groups_cont">
+						<label>Parent Group</label>
+						<select><option class="group"></option></select>
+					</div>
+				</li>
+				<li>
+					{{ data.newgroupform.csrf_token() }}
+					{{ data.newgroupform.level.label() }}
+					{{ data.newgroupform.level(placeholder="Group level should be an integer") }}
+					{{ print_errors(data.newgroupform.level.errors) }}
+				</li>
+				<li>
+					{{ data.newgroupform.group.label() }}
+					{{ data.newgroupform.group(placeholder="New group name") }}
+					{{ print_errors(data.newgroupform.group.errors) }}
+				</li>
+				<li>
+					{{ data.newgroupform.parent_group() }}
+					{{ data.newgroupform.parent_level() }}
+					{{ print_errors(data.newgroupform.parent_group.errors) }}
+					{{ print_errors(data.newgroupform.parent_level.errors) }}
+				</li>
+				<li><input type="submit" value="Add" class="button small" /></li>
+			</ul>
+		</form>
+	</li>
+
+	<li class="dmat-form add-words" id="new_word">
+		<form action="?settings-type=new-word#new_word" method="post" class="small">
+			<ul class="noul">
+				<li>
+					<h3>Add new word</h3>
+					{{ data.newwordform.csrf_token() }}
+					{{ data.newwordform.word_type.label() }}
+					{{ data.newwordform.word_type(placeholder="Noun, Verb, Adjective, Phrase") }}
+					{{ print_errors(data.newwordform.word_type.errors) }}
+				</li>
+
+				<li>
+					{{ data.newwordform.word_group.label() }}
+					{{ data.newwordform.word_group(placeholder="Eg. Places, Active, Good, Come by") }}
+					{{ print_errors(data.newwordform.word_group.errors) }}
+				</li>
+				<li>
+					{{ data.newwordform.word.label() }}
+					{{ data.newwordform.word(placeholder="Word") }}
+					{{ print_errors(data.newwordform.word.errors) }}
+				</li>
+				<li><input type="submit" value="Add" class="button small"/></li>
+			</ul>
+		</form>
+	</li>
+	{%- endif %}
+
+	<li class="dmat-form add-tweet" id="new_tweet">
+		<div id="words_list" class="box"><h3 class="title">Words in "<span class="word-group"></span>"</h3></div>
+
+		<form action="?settings-type=new-tweet#new_tweet" method="post" id="new_tweet_form" class="small small-wider">
+			<ul class="noul">
+				<li>
+					<h3>Add new tweet</h3>
+					<label for="choose_tweet_group">Tweet group</label>
+					<select id="choose_tweet_group"><option class="group"></option></select>
+				</li>
+				<li>
+					{{ data.newtweetform.csrf_token() }}
+					<label for="choose_word_pool">Word group</label>
+					<select id="choose_word_pool"><option class="word"></option></select>
+				</li>
+				<li>
+					<input type="button" class="button" value="Insert" id="insert_word_pool" />
+				</li>
+				<li>
+					{{ data.newtweetform.tweet.label() }}
+					{{ data.newtweetform.tweet(placeholder="Tweet") }}
+					{{ data.newtweetform.group(id="tweet_group") }}
+					{{ data.newtweetform.group_level(id="tweet_group_level") }}
+
+					{{ print_errors(data.newtweetform.tweet.errors) }}
+					{{ print_errors(data.newtweetform.group.errors) }}
+					{{ print_errors(data.newtweetform.group_level.errors) }}
+				</li>
+				<li>
+					<input type="submit" value="Save" class="button small" />
+				</li>
+			</ul>
+		</form>
+	</li>
+</ul>
+
+<script>
+	var DMAT = (function() {
+		var groups=null, parent_groups_cont, grp_level, parent_groups = {},
+			tweet_group, tweet_groups = {}, ch_wpool, tweet_word_groups = {}, auth_win;
+
+		function populate_parent_grp() {
+			if(groups!==null) {
+				var chosen_level = parseInt(grp_level.val()), source=[], counter = 0;
+
+				for(var i=0; i<groups.length; i++) {
+					if(groups[i].level<chosen_level) {
+						source.push({"group": groups[i].group, "level": groups[i].level})
+					}
+				}
+				var directives = {
+					"group": {
+						html: function() { 
+								parent_groups[counter] = {"group": this.group, "level": this.level};
+								return this.group+" (Level: "+this.level+")";
+						},
+						value: function() {
+							return counter++;
+						}
+					}
+				};
+
+				parent_groups_cont.find("select").render(source, directives);
+
+				if(source.length==0)
+					parent_groups_cont.hide().removeClass("active");
+				else
+					parent_groups_cont.fadeIn(400).addClass("active");
+
+			}
+		}
+
+		return {
+			init: function() {
+				parent_groups_cont = $("#parent_groups_cont");
+				grp_level=$("#level");
+				tweet_group = $("#choose_tweet_group");
+				ch_wpool = $("#choose_word_pool");
+
+				// Twitter login
+				$("#twitter_button").click(function() {
+					var item = $(this), temp = $("<div></div>"), cont, win_loc, timer;
+					$.getJSON( "?get=twitter-auth-url", function(data) {
+						// auth_win = window.open(data.url, "_blank");
+						auth_win = window.open(data.url, "DMATFLaavTwitterIntegration", "width=400,height=400,menubar=false,toolbar=no,location=no");
+					});
+					return false;
+				});
+				// ===
+				// Tooltip for change account button
+				tttext.attach($(".dmat-settings-form .button.change"), {"message": "Use a different Twitter account, current account will cease to get updates from DMAT. It will no longer have any association with DMAT.", "position": "top", "offset": 10});
+				// ===
+
+				tttext.attach($(".twitter-info"), {"message": "Twitter account associated with DMAT.", "position": "top", "offset": 10});
+
+				$.getJSON( "?get=groups", function( data ) {
+					groups = data.groups;
+
+					// This for the new tweet section
+					if(groups.length > 0) {
+						var counter = 0;
+						tweet_group.render(groups, directives = {
+							"group": {
+								html: function(item) {
+									var text = this.group+" (level: "+this.level+")";
+									tweet_groups[counter] = {"group": this.group, "level": this.level};
+									return text;
+								},
+								value: function(item) {
+									return counter++;
+								}
+							}
+						});
+					}
+					else {
+						tweet_group.closest("li").append("<p>No groups found.</p>");
+						tweet_group.fadeOut(300);
+					}
+
+				});
+
+				// Setting position for word list
+				var words_list_cont = $("#words_list"), new_tweet = $("#new_tweet");
+				// ===
+
+				// Fetching words and populating associated fields
+				$.getJSON("?get=words", function(data) {
+					var words = data.words, words_pool = [], word_types = [], word_groups = [], counter = 0;
+					for(word_type in words) {
+						for(word_group in words[word_type]) {
+							if(!(word_group in word_groups)) {
+								word_groups.push(word_group);
+							}
+							text = word_group+" ("+word_type+")";
+							words_pool.push({"word": word_group+" ("+word_type+")", "word_group": word_group, "word_type": word_type});
+						}
+						
+						if(!(word_type in word_types))
+							word_types.push(word_type);
+					}
+
+					$("#word_type").autocomplete({"source": word_types});
+					$("#word_group").autocomplete({"source": word_groups});
+
+					if(words_pool.length > 0) {
+						ch_wpool.render(source=words_pool, directives= {
+							"word":{
+								value: function(item) {
+									tweet_word_groups[counter] = {"word_group": words[this.word_type][this.word_group], "text": "["+this.word_type+"***"+this.word_group+"]"};
+									return counter++;
+								}
+							}
+						});
+
+						ch_wpool.on("change", function() {
+							var item = $(this), indx = item.val(), wordlist = tweet_word_groups[indx]["word_group"], 
+							text = tweet_word_groups[indx]["text"];
+
+							if(typeof wordlist!=="undefined" && wordlist.length > 0) {
+								var ol = $('<ol class="word-list"></ol>'), li = $("<li></li>");
+								wordlist = wordlist.sort();
+								for(var i=0; i<wordlist.length; i++) {
+									ol.append(li.clone().html(wordlist[i]));
+								}
+								words_list_cont.find(".word-group").html(text);
+								words_list_cont.find(".word-list").remove();
+								words_list_cont.append(ol);
+								words_list_cont.find(".word-list").css("max-height", new_tweet.outerHeight(true) - 160);
+							}
+							else {
+								words_list_cont.find(".word-group").html("No list selected.");
+								words_list_cont.html("No words found.");
+							}
+						}).change();
+
+						// Insert word pool into the tweet
+						$("#insert_word_pool").click(function() {
+							var text = $("textarea#tweet").val();
+							$("textarea#tweet").val(text+tweet_word_groups[ch_wpool.val()]["text"]);
+							$("textarea#tweet").focus();
+						});
+						// ===
+					}
+					else {
+						ch_wpool.fadeOut(200);
+						$("#insert_word_pool").fadeOut(200);
+						words_list_cont.fadeOut(300);
+					}
+				});
+				// ===
+				$("#new_tweet_form").submit(function() {
+					var text = $("#choose_tweet_group").val();
+					if(tweet_groups.hasOwnProperty(text)) {
+						$("#tweet_group").val(tweet_groups[text].group);
+						$("#tweet_group_level").val(tweet_groups[text].level);
+					}
+					else {
+						$("#tweet_group").val("");
+						$("#tweet_group_level").val("");
+					}
+					return;
+				});
+			},
+			admin_init: function(){
+				parent_groups_cont.hide().removeClass("active");
+
+				// Load set of parent groups based on chosen Group level
+				grp_level.change(function() {
+					populate_parent_grp();
+				});
+				// ===
+
+				$("#new_group_form").submit(function() {
+					if(parent_groups_cont.hasClass("active")) {
+						var text = parent_groups_cont.find("select").val();
+						$("#parent_group").val(parent_groups[text].group);
+						$("#parent_level").val(parent_groups[text].level);
+					}
+					return;
+				});
+			},
+			close_auth_window: function() {
+				auth_win.close();
+				window.location.reload();
+			}
+		};
+	})();
+
+	window.onload = function() {
+		if(opener!==null) {
+			opener.DMAT.close_auth_window();
+		}
+		try {
+			DMAT.init();
+			{%- if data.current_user.get_role()=="admin" %}
+			DMAT.admin_init();
+			{%- endif %}
+		}
+		catch(e) { console.log(e); }
+	}
+</script>

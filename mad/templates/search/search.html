@@ -1,0 +1,84 @@
+{%- if current_user.is_authenticated() %}
+	{%- extends "dashboard.html" %}
+{%- else %}
+	{%- extends "layout.html" %}
+{%- endif %}
+{%- block body_class %}search search-filters{% endblock %}
+{% block meta_desc %}Find the ad-package that best suits your needs!{% endblock %}
+{%- macro print_errors(errors) %}
+	{%- if errors %}
+		{%- for error in errors %}
+		<span class="error">{{ error }}</span>
+		{%- endfor %}
+	{%- endif %}
+{%- endmacro %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<article>
+<form id="search_form" action="{{ url_for('search.index', action='results') }}" method="post">
+<ul class="noul">
+	<li>
+		<h2 class="title">
+			Flaav Media Plan
+			<span class="sub-title">Find media plans best suited to you</span>
+		</h2>
+		<p class="message">{{ data.message|safe }}</p>
+		{{ data.searchform.csrf_token() }}
+		{{ data.searchform.market_goal.label() }}
+		{{ data.searchform.market_goal() }}
+		{{ print_errors(data.searchform.market_goal.errors) }}
+	</li>
+	<li>
+		{{ data.searchform.customer_type.label() }}
+		{{ data.searchform.customer_type(class="radio") }}
+		{{ print_errors(data.searchform.customer_type.errors) }}
+	</li>
+	<li>
+		{{ data.searchform.viewership_industry.label() }}
+		{{ data.searchform.viewership_industry(placeholder="Comma separated") }}
+		{{ print_errors(data.searchform.viewership_industry.errors) }}
+	</li>
+	<li>
+		{{ data.searchform.campaign_length.label() }}
+		{{ data.searchform.campaign_length() }}
+		{{ print_errors(data.searchform.campaign_length.errors) }}
+	</li>
+	<li>
+		{{ data.searchform.budget.label() }}
+		{{ data.searchform.budget(placeholder="Eg: 1200") }}
+		{{ print_errors(data.searchform.budget.errors) }}
+	</li>
+	<li>
+		{{ data.searchform.media_type.label() }}
+		{{ data.searchform.media_type(class="checkboxes") }}
+		{{ print_errors(data.searchform.media_type.errors) }}
+	</li>
+	<li>
+		{{ data.searchform.demography.label() }}
+		{{ data.searchform.demography(class="checkboxes") }}
+		{{ print_errors(data.searchform.demography.errors) }}
+	</li>
+	<li>
+		{{ data.searchform.geography.label() }}
+		{{ data.searchform.geography(class="checkboxes") }}
+		{{ print_errors(data.searchform.geography.errors) }}
+		<div class="hidden">
+			{{ data.searchform.select_markets.label() }}
+			{{ data.searchform.select_markets(placeholder="California") }}
+			{{ print_errors(data.searchform.select_markets.errors) }}
+		</div>
+	</li>
+	<li>
+		{{ data.searchform.conversion_rate.label() }}
+		<div id="conversion_rate_slider"> </div>
+		<ul class="slider-labels noul"><li class="label">We're okay</li><li class="label">We're good</li><li class="label">We're the best</li></ul>
+		{{ data.searchform.conversion_rate() }}
+		{{ print_errors(data.searchform.conversion_rate.errors) }}
+	</li>
+	<li>
+		<input type="submit" class="button" value="Find" />
+	</li>
+</ul>
+</form>
+</article>
+{% endblock %}

@@ -1,0 +1,41 @@
+{%- extends "layout.html" %}
+{% block meta_desc %}Dashboard{% endblock %}
+{% block dashboard_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+{% block dashboard_js %}<script type="text/javascript" src="{{ url_for('static', filename='js/dashboard.js') }}"> </script>{% endblock %}
+
+{%- block body_class %}dashboard {% block body_classes %}{% endblock %}{%- endblock %}
+{% block sidebar %}
+<ul id="sidebar" class="noul vertical-menu">
+	<li class="account">
+      <a href="{{ url_for('user.index', action='account') }}" class="my-account">{{ current_user.get_name() }}</a>
+      <ul class="noul sub-menu">
+	      <li class="logout"><a href="{{ logout_url }}">Logout ({{ current_user.get_name() }})</a></li>
+      </ul>
+	</li>
+	<li class="dashboard-home"><a href="{{ url_for('dashboard.index', name='home') }}">Dashboard</a></li>
+	{%- if current_user.role in ["admin", "provider"] %}
+		<li class="media-add"><a href="{{ url_for('media.index', action='add') }}">Add</a></li>
+		<li class="media-view"><a href="{{ url_for('media.index', action='view') }}">View all</a></li>
+		{%- if current_user.role=="admin" %}
+		<li class="media-view"><a href="{{ url_for('media.index', action='view') }}?unverified-media-items=true">View all unverified items</a></li>
+		{%- endif %}
+	{%- endif %}
+	<li class="search"><a href="{{ url_for('search.index') }}">Search</a></li>
+	
+	{%- if current_user.role in ["viewer", "anon"] %}
+	<li class="premium"><a href="#">Premium</a></li>
+	{%- endif %}
+
+	{%- if current_user.role in ["admin", "subscriber"] %}
+		<li class="dashboard-plugins">
+			<a href="{{ url_for('pluginloader.index') }}">Services</a>
+			<ul class="sub-menu noul">
+				<li class="plugin">
+					<a href="#" class="view"></a>
+					<a href="#" class="settings"></a>
+				</li>
+			</ul>
+		</li>
+	{%- endif %}
+</ul>
+{% endblock %}

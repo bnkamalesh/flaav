@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block meta_desc %}{{ data.page_title }}{% endblock %}
+{% block title %}{{ data.page_title }}{% endblock %}
+{% block body_class %}front page page-{{ page_name }}{% endblock %}
+{% block content %}
+<article>
+{{ data.content|safe }}
+</article>
+{% endblock %}

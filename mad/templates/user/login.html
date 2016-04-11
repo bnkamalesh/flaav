@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+{%- macro print_errors(errors) %}
+  {%- if errors %}
+    {%- for error in errors %}
+    <span class="error">{{ error }}</span>
+    {%- endfor %}
+  {%- endif %}
+{%- endmacro %}
+{% block title %}Login/Register{% endblock %}
+{% block body_class %}front user page-user-login{% endblock %}
+{% block content %}
+    {%- if not current_user.is_authenticated() %}
+    <section class="login">
+      <form action="" method="post" class="login small">
+        <ul class="noul">
+          <li>
+            <h3 class="title">Login</h3>
+            {{ data.login_form.csrf_token }}
+            {{ data.login_form.email(placeholder='Email', class='email', required="", autofocus="") }}
+            {{ print_errors(data.login_form.email.errors) }}
+          </li>
+
+          <li>
+            {{ data.login_form.password(placeholder='Password', class='password', required="") }}
+            {{ print_errors(data.login_form.password.errors) }}
+          </li>
+          <li>
+            {{ data.login_form.remember(class="checkbox") }}
+            {{ print_errors(data.login_form.remember.errors) }}
+            {{ data.login_form.remember.label }}
+          </li>
+          <li>
+              <input type="submit" class="button" id="do_login" value="Login" />
+              <input type="hidden" class="redirect_url" value="" />
+          </li>
+          <li>
+          <p class="message {{ data.status }}">
+            {%- if data.message %}
+              {{ data.message|safe }}
+            {%- else %}
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  {% for message in remove_duplicates(messages) %}
+                    {{ message|safe }}
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+            {%- endif %}
+          </p>
+          <small>Not a registered user? <a href="#" id="show_register">Register here</a>.</small>
+          </li>
+        </ul>
+      </form>
+    </section>
+
+    <section class="register">
+      <form action="{{ url_for('user.index', action='register') }}" method="post" class="register small">
+        <ul class="noul">
+          <li>
+            <h3 class="title">Register</h3>
+            {{ data.reg_form.csrf_token }}
+            {{ data.reg_form.name(placeholder='*Name', required="", autofocus="") }}
+            {{ print_errors(data.reg_form.name.errors) }}
+          </li>
+          <li>
+            {{ data.reg_form.email(placeholder='*Email', required="", id="reg_email") }}
+            {{ print_errors(data.reg_form.email.errors) }}
+          </li>
+          <li>
+            {{ data.reg_form.password(placeholder='*Password', required="", id="reg_password") }}
+            {{ print_errors(data.reg_form.password.errors) }}
+          </li>
+          <li>
+            {{ data.reg_form.confirm(placeholder='*Repeat password', required="") }}
+            {{ print_errors(data.reg_form.confirm.errors) }}
+          </li>
+          <li>
+            {{ data.reg_form.is_provider(class="checkbox") }}
+            {{ data.reg_form.is_provider.label }}
+            {{ print_errors(data.reg_form.is_provider.errors) }}
+          </li>
+          <li>
+            <input type="submit" class="button" id="do_register" value="Register" />
+          </li>
+          <li>
+            <small>Already a registered user? <a href="#" id="show_login">Login here</a>.</small>
+          </li>
+        </ul>
+      </form>
+    </section>
+    {%- endif %}
+{% endblock %}

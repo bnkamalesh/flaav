@@ -1,0 +1,8 @@
+Name = Calendar
+Classname = Calendar
+Filename = calendar
+id = calendar
+Author = Kamaleshwar
+Version = 0.1
+Website = http://flaav.com
+Description = Flaav calendar.

@@ -1,0 +1,47 @@
+{% extends "dashboard.html" %}
+{% block body_classes %}media media-view{% endblock %}
+{% block content %}
+<h2 class="title">
+	Ad packages 
+	{%- if data.media_items %}
+		<span class="sub-title count">viewing: {{ data.media_items.__len__() or 0 }} items</span>
+	{%- else %}
+		<span class="sub-title">No packages found</span>
+	{%- endif %}
+</h2>
+{%- if data.media_items %}
+<p class="filter-container">
+	Filter: <span></span>
+	<select id="filters" class="noul"><option class="b-name"></option></select>
+</p>
+<ul class="noul" id="media_items">
+{%- for media_item in data.media_items %}
+	<li class="media-item box">
+		<h4 class="title">
+			<span class="business-name">{{ media_item["name"] }}</span>
+			<span class="ad-name sub-title">{{ media_item["ad_name"] }}</span>
+		</h4>
+		{%- if media_item["banner"] %}<div class="banner"><img src="" data-src="{{media_item['banner']}}" class="lazy-load" alt="{{ media_item['name'] }}" /></div>{%- endif %}
+		{%- if media_item["description"] %}
+		<p class="description">{{ media_item["description"][0:75].strip() }}...</p>
+		{%- endif %}
+		<ul class="noul contact-info">
+			{%- if media_item['website'] %}<li class="website"><a href="{{ media_item['website'] }}">{{ media_item["website"] }}</a></li>{%- endif %}
+			<li class="email"><a href="mailto:{{ media_item['email'] }}">{{ media_item["email"] }}</a></li>
+			{%- if media_item['contact_phone'] %}<li class="phone">{{ media_item['contact_phone'] }}</li>{%- endif %}
+			<li><span class="currency"></span>{{ media_item["price"] }}</li>
+		</ul>
+		<a href="{{ url_for('media.index', action='view', media_id=media_item['_id']) }}{%- if data.unverified_items %}?unverified-media-item=true{%- endif %}" class="button">View more</a>
+		<a href="{{ url_for('media.index', action='edit', media_id=media_item['_id']) }}{%- if data.unverified_items %}?unverified-media-item=true{%- endif %}" class="button">Edit</a>
+	</li>
+{%- endfor %}
+</ul>
+{%- else %}
+{%- if data.filter %}
+	<p>No packages found under the business <strong><i>{{ data.filter.business }}</i></strong>.</p>
+{%- else %}
+	<p>No packages found.</p>
+{%- endif %}
+<p>You can add new ad-packages <a href="{{ url_for('media.index', action='add') }}">here</a>.</p>
+{%- endif %}
+{% endblock %}

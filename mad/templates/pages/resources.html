@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block meta_desc %}{{ data.page_title }}{% endblock %}
+{% block title %}{{ data.page_title }}{% endblock %}
+{% block body_class %}front page page-{{ page_name }}{% endblock %}
+{% block content %}
+<article>
+<h2 class="title">Resources</h2>
+{{ data.content|safe }}
+</article>
+{% endblock %}

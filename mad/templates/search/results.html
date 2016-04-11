@@ -1,0 +1,73 @@
+{%- if current_user.is_authenticated() %}
+	{% extends "dashboard.html" %}
+{%- else %}
+	{% extends "layout.html" %}
+{%- endif %}
+{%- macro print_errors(errors) %}
+	{%- if errors %}
+		{%- for error in errors %}
+		<span class="error">{{ error }}</span>
+		{%- endfor %}
+	{%- endif %}
+{%- endmacro %}
+{% block title %}Search results{% endblock %}
+{% block body_class %}dashboard search search-results{% endblock %}
+{% block meta_desc %}Ad-packages tailored to your needs.{% endblock %}
+{% block content %}
+{%- if data.media_items %}
+<h2 class="title">
+	Flaav Media Plan
+	<span class="sub-title">Media plans we found for you (viewing: <span class="count">{{ data.media_items.__len__() }}</span> items)</span>
+</h2>
+{%- if current_user.is_authenticated() %}
+<form action="" method="post" id="save_search">
+	<ul class="noul">
+		<li>
+			{{ data.savesearchform.csrf_token() }}
+			{{ data.savesearchform.searchparams(class="searchparams") }}
+			{{ data.savesearchform.title(placeholder="Enter a title, for this search", class="title") }}
+			<input type="submit" value="Save" class="button" />
+			<span class="message"></span>
+		</li>
+	</ul>
+</form>
+{%- endif %}
+<ul class="noul search-results" id="media_items">
+{%- for media_item in data.media_items %}
+	<li class="media-item box">
+		{%- if current_user.role in ["buyer", "subscriber", "provider", "admin"] %}
+		<h3 class="title">
+			{{ media_item["name"] }}
+			<span class="sub-title">{{ media_item["ad_name"] }}</span>
+		</h3>
+		{%- if media_item["banner"] %}<div class="banner"><img src="" data-src="{{media_item['banner']}}" alt="{{ media_item['name'] }}" class="lazy-load" /></div>{%- endif %}
+		<p class="description">
+			{{ media_item["description"] }}
+		</p>
+		{%- else %}
+		<p>
+			The ad provider details is a premium feature.
+			Become a <a href="#">premium user</a> to find out more.
+		</p>
+		{%- endif %}
+
+		<!-- scores -->
+		
+		{%- if current_user.role in ["buyer", "subscriber", "provider", "admin"] %}
+		<h4>Contact Info</h4>
+		<ul class="noul contact-info">
+			{%- if media_item['website'] %}<li class="website"><a href="{{ media_item['website'] }}">{{ media_item["website"] }}</a></li>{%- endif %}
+			{%- if media_item['contact_phone'] %}<li class="phone">{{ media_item['contact_phone'] }}</li>{%- endif %}
+			<li><span class="currency"></span>{{ media_item["price"] }}</li>
+			<li class="campaign-length">Campaign length: {{ media_item["campaign_length"] }}</li>
+		</ul>
+		{%- endif %}
+	</li>
+{%- endfor %}
+</ul>
+{%- else %}
+<h3>Sorry&nbsp;&nbsp;:(</h3>
+<p>We couldn't find any packages matching your criteria.</p>
+<p>Try <a href="{{ url_for('search.index') }}">searching</a> again?</p>
+{%- endif %}
+{% endblock %}

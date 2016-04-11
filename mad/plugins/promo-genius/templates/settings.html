@@ -1,0 +1,59 @@
+{%- macro print_errors(errors) %}
+	{%- if errors %}
+		{%- for error in errors %}
+		<span class="error">{{ error }}</span>
+		{%- endfor %}
+	{%- endif %}
+{%- endmacro %}
+<style>
+form.small { margin-bottom: 2em; }
+</style>
+<h2 class="title">
+	Promo Genius Settings
+	<span class="sub-title">Configure Promo Genius</span>
+</h2>
+
+<form action="?action=new-promotion" method="POST" class="small">
+	<h3>New promotion</h3>
+	<ul class="noul">
+		<li>
+			{{ data.newpromoform.csrf_token() }}
+			{{ data.newpromoform.promo_title.label() }}
+			{{ data.newpromoform.promo_title(placeholder="Title") }}
+			{{ print_errors(data.newpromoform.promo_title.errors) }}
+		</li>
+		<li>
+			{{ data.newpromoform.promo_dates.label() }}
+			{{ data.newpromoform.promo_dates(placeholder="dd-mm-yyyy, dd-mm-yyyy") }}
+			{{ print_errors(data.newpromoform.promo_dates.errors) }}
+		</li>
+		<li>
+			{{ data.newpromoform.promo_time.label() }}
+			{{ data.newpromoform.promo_time(placeholder="Time(s) when offer is active (24hrs).") }}
+			{{ print_errors(data.newpromoform.promo_time.errors) }}
+		</li>
+		<li>
+			{{ data.newpromoform.promo_offer.label() }}
+			{{ data.newpromoform.promo_offer(placeholder="Offer name") }}
+			{{ print_errors(data.newpromoform.promo_offer.errors) }}
+		</li>
+		<li>
+			{{ data.newpromoform.promo_description.label() }}
+			{{ data.newpromoform.promo_description(placeholder="Offer description") }}
+			{{ print_errors(data.newpromoform.promo_description.errors) }}
+		</li>
+		<li>
+			{{ data.newpromoform.promo_count.label() }}
+			{{ data.newpromoform.promo_count(placeholder="No.of times this offer can be used in total") }}
+			{{ print_errors(data.newpromoform.promo_count.errors) }}
+		</li>
+		<li>
+			{{ data.newpromoform.reference_boost.label() }}
+			{{ data.newpromoform.reference_boost()}}
+			{{ print_errors(data.newpromoform.reference_boost.errors) }}
+		</li>
+		<li>
+			<input type="submit" value="Create" />
+		</li>
+	</ul>
+</form>
